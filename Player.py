@@ -8,17 +8,16 @@ from Piece import Piece
 
 @check_contracts
 class Player:
-    """ A Player
-
+    """
     Instance Attributes:
-        - is_AI: whether this player is an AI or not
+        - is_ai: whether this player is an AI or not
         - colour: the colour of this player's pieces
         - materials: represents a player's pieces and its respective location on the game board
         - points: the amount of points a player currently has
 
     Representation Invariants:
         - points >= 0
-        """
+    """
     is_ai: bool
     colour: str
     materials: dict[str, Piece]
