@@ -15,3 +15,9 @@ class Game:
 
     Representation Invariants:
     """
+    board: Board
+    players: tuple[Player, Player]
+
+    def __init__(self, board: Board, players: tuple[Player, Player]):
+        self.board = board
+        self.players = players

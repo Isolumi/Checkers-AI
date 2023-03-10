@@ -1,8 +1,12 @@
 """ Board """
 
 from __future__ import annotations
+
+from types import NoneType
+
 from python_ta.contracts import check_contracts
 from Piece import Piece
+from typing import Any, Optional
 
 
 @check_contracts
@@ -14,7 +18,11 @@ class Board:
     Representation Invariants:
         - board is 8x8
     """
-    board: tuple[list[Piece]]
+    board: list[list[Any]]
 
-    def __init__(self, board: tuple[list[Piece]]):
-        self.board = board
+    def __init__(self, board: Optional[list[list[Any]]]):
+        if board is not None:
+            self.board = board
+        else:
+            a = Piece()
+            self.board = [[5], [5]]
