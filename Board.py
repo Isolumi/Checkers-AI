@@ -8,7 +8,7 @@ from python_ta.contracts import check_contracts
 from Piece import Piece
 from typing import Any, Optional
 
-
+#testing git
 @check_contracts
 class Board:
     """
