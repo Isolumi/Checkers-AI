@@ -26,3 +26,6 @@ class Board:
         else:
             a = Piece()
             self.board = [[5], [5]]
+
+    def __str__(self):
+        raise NotImplementedError
