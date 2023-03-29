@@ -1,7 +1,8 @@
 """ UI for Checkers """
 import pygame
-from checkers.constants import WIDTH, HEIGHT
+from checkers.constants import *
 from checkers.board import Board
+from checkers.game import Game
 
 FPS = 60
 
@@ -9,14 +10,20 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Checkers!')
 
 
+def get_row_col_from_mouse(pos) -> tuple:
+    """ gets the row and col position from user mouse """
+    x, y = pos
+    row = y // SQUARE_SIZE
+    col = x // SQUARE_SIZE
+
+    return (row, col)
+
+
 def main():
     """ main """
     run = True
     clock = pygame.time.Clock()
-    board = Board()
-
-    piece = board.get_piece(0, 1)
-    board.move(piece, 4, 3)
+    game = Game(WIN)
 
     while run:
         clock.tick(FPS)
@@ -26,10 +33,12 @@ def main():
                 run = False
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                pass
+                pos = pygame.mouse.get_pos()
+                row, col = get_row_col_from_mouse(pos)
+                if game.turn == WHITE:
+                    game.select(row, col)
 
-        board.draw(WIN)
-        pygame.display.update()
+        game.update()
 
     pygame.quit()
 
