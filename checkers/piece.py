@@ -10,7 +10,7 @@ class Piece:
     x_pos: int
     y_pos: int
 
-    PADDING = 10 #TODO: maybe put this in init
+    PADDING = 10 # TODO: maybe put this in init
     OUTLINE = 45
 
     def __init__(self, row: int, col: int, colour: tuple[int, int, int]) -> None:

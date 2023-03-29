@@ -38,6 +38,7 @@ def main() -> None:
 
         game.update()
 
+    # winner decided, potetially do play again feature
     pygame.quit()
 
 
