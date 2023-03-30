@@ -29,13 +29,13 @@ class Piece:
     def make_king(self) -> None:
         self.is_king = True
 
-    def draw(self, win: pygame.Surface) -> None:
+    def draw(self, screen: pygame.Surface) -> None:
         radius = SQUARE_SIZE // 2 - self.PADDING
-        pygame.draw.circle(win, GREY, (self.x_pos, self.y_pos), self.OUTLINE)
-        pygame.draw.circle(win, self.colour, (self.x_pos, self.y_pos), radius)
+        pygame.draw.circle(screen, GREY, (self.x_pos, self.y_pos), self.OUTLINE)
+        pygame.draw.circle(screen, self.colour, (self.x_pos, self.y_pos), radius)
 
         if self.is_king:
-            win.blit(CROWN, (self.x_pos - CROWN.get_width() // 2, self.y_pos - CROWN.get_height() // 2))
+            screen.blit(CROWN, (self.x_pos - CROWN.get_width() // 2, self.y_pos - CROWN.get_height() // 2))
 
 
     def move(self, row: int, col: int) -> None:

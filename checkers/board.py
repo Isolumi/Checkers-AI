@@ -18,11 +18,11 @@ class Board:
         self.black_kings = self.white_kings = 0
         self.create_board()
 
-    def draw_squares(self, win: pygame.Surface) -> None:
-        win.fill(DARK_BROWN)
+    def draw_squares(self, screen: pygame.Surface) -> None:
+        screen.fill(DARK_BROWN)
         for row in range(ROWS):
             for col in range(row % 2, ROWS, 2):
-                pygame.draw.rect(win, LIGHT_BROWN, (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
+                pygame.draw.rect(screen, LIGHT_BROWN, (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
     def move(self, piece: Piece, row: int, col: int) -> None:
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
@@ -52,13 +52,13 @@ class Board:
                 else:
                     self.board[row].append(0)
 
-    def draw(self, win: pygame.Surface) -> None:
-        self.draw_squares(win)
+    def draw(self, screen: pygame.Surface) -> None:
+        self.draw_squares(screen)
         for row in range(ROWS):
             for col in range(COLS):
                 piece = self.board[row][col]
                 if piece != 0:
-                    piece.draw(win)
+                    piece.draw(screen)
 
     def remove(self, pieces: list[Piece]) -> None:
         for piece in pieces:
@@ -69,11 +69,11 @@ class Board:
                 else:
                     self.black_left -= 1
 
-    def winner(self) -> Optional[tuple[int, int, int]]:
+    def winner(self) -> Optional[tuple[tuple[int, int, int], list[list[Piece | int]]]]:
         if self.white_left <= 0:
-            return BLACK
+            return (BLACK, self.board)
         elif self.black_left <= 0:
-            return WHITE
+            return (WHITE, self.board)
         else:
             return None
 

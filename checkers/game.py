@@ -1,21 +1,20 @@
-from typing import Optional
-
 import pygame
+from typing import Optional
 from .constants import *
 from .board import Board
 from .piece import Piece
 
 
 class Game:
-    win: pygame.Surface
+    screen: pygame.Surface
     selected: Optional[Piece]
     board: Board
     turn: tuple[int, int, int]
     valid_moves: dict  # TODO: fix this
 
-    def __init__(self, win: pygame.Surface) -> None:
+    def __init__(self, screen: pygame.Surface) -> None:
         self._init()
-        self.win = win
+        self.screen = screen
 
     def _init(self) -> None:
         self.selected = None
@@ -24,11 +23,11 @@ class Game:
         self.valid_moves = {}
 
     def update(self) -> None:
-        self.board.draw(self.win)
+        self.board.draw(self.screen)
         self.draw_valid_moves(self.valid_moves)
         pygame.display.update()
 
-    def winner(self) -> tuple[int, int, int]:
+    def winner(self) -> Optional[tuple[tuple[int, int, int], list[list[Piece | int]]]]:
         return self.board.winner()
 
     def reset(self) -> None:
@@ -67,7 +66,7 @@ class Game:
     def draw_valid_moves(self, moves):  # TODO do the parameter stuff
         for move in moves:
             row, col = move
-            pygame.draw.rect(self.win, LIGHT_RED,
+            pygame.draw.rect(self.screen, LIGHT_RED,
                              (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
     def change_turn(self) -> None:
