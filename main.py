@@ -57,7 +57,7 @@ def game_over(screen: pygame.Surface, winner: tuple[int, int, int], board: list[
         win_txt = corbel_70.render('BLACK WINS!', True, BLACK)
     else:
         win_txt = corbel_70.render('WHITE WINS!', True, WHITE)
-    draw_game_over(screen, winner, board)
+    draw_game_over(screen, board)
 
     # Constructing buttons
     play_again_txt = corbel_35.render('Player Again?', True, BLACK)
@@ -84,7 +84,7 @@ def game_over(screen: pygame.Surface, winner: tuple[int, int, int], board: list[
         if play_again_rect.left <= x <= play_again_rect.right and play_again_rect.top <= y <= play_again_rect.bottom:
             pygame.draw.rect(
                 surface=screen,
-                color=BLUE,
+                color=DARK_GREY,
                 rect=[
                     play_again_rect.left,
                     play_again_rect.top,
@@ -95,7 +95,7 @@ def game_over(screen: pygame.Surface, winner: tuple[int, int, int], board: list[
         elif quit_rect.left <= x <= quit_rect.right and quit_rect.top <= y <= quit_rect.bottom:
             pygame.draw.rect(
                 surface=screen,
-                color=BLUE,
+                color=DARK_GREY,
                 rect=[
                     quit_rect.left,
                     quit_rect.top,
