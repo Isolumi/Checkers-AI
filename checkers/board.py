@@ -77,7 +77,7 @@ class Board:
         else:
             return None
 
-    def get_valid_moves(self, piece: Piece) -> dict: #TODO fix return type
+    def get_valid_moves(self, piece: Piece) -> dict:  # TODO fix return type
         moves = {}
         left = piece.col - 1
         right = piece.col + 1
@@ -93,32 +93,36 @@ class Board:
 
         return moves
 
-    def _traverse_left(self, start: int, stop: int, step: int, colour: tuple[int, int, int], left, skipped: list = None) -> dict: #TODO: fix return types and parameter typings
-        if skipped is None:
-            skipped = []
+    def _traverse_left(self, start: int, stop: int, step: int,
+                       colour: tuple[int, int, int], left,
+                       captured: list = None) -> dict:  # TODO: fix return types and parameter typings
+
+        if captured is None:
+            captured = []
+
         moves = {}
         last = []
-        for r in range(start, stop, step):
+        for row in range(start, stop, step):
             if left < 0:
                 break
 
-            current = self.board[r][left]
+            current = self.board[row][left]
             if current == 0:
-                if skipped and not last:
+                if captured and not last:
                     break
-                elif skipped:
-                    moves[(r, left)] = last + skipped
+                elif captured:
+                    moves[(row, left)] = last + captured
                 else:
-                    moves[(r, left)] = last
+                    moves[(row, left)] = last
 
                     if last:
                         if step == -1:
-                            row = max(r - 3, 0)
+                            row = max(row - 3, 0)
                         else:
-                            row = min(r + 3, ROWS)
+                            row = min(row + 3, ROWS)
 
-                        moves.update(self._traverse_left(r+step, row, step, colour, left - 1, skipped=last))
-                        moves.update(self._traverse_right(r+step, row, step, colour, left + 1, skipped=last))
+                        moves.update(self._traverse_left(row + step, row, step, colour, left - 1, captured=last))
+                        moves.update(self._traverse_right(row + step, row, step, colour, left + 1, captured=last))
                     break
 
             elif current.colour == colour:
@@ -129,33 +133,33 @@ class Board:
 
         return moves
 
-    def _traverse_right(self, start, stop, step, colour, right, skipped: list = None) -> dict:
-        if skipped is None:
-            skipped = []
+    def _traverse_right(self, start, stop, step, colour, right, captured: list = None) -> dict:
+        if captured is None:
+            captured = []
 
         moves = {}
         last = []
-        for r in range(start, stop, step):
+        for row in range(start, stop, step):
             if right >= COLS:
                 break
 
-            current = self.board[r][right]
+            current = self.board[row][right]
             if current == 0:
-                if skipped and not last:
+                if captured and not last:
                     break
-                elif skipped:
-                    moves[(r, right)] = last + skipped
+                elif captured:
+                    moves[(row, right)] = last + captured
                 else:
-                    moves[(r, right)] = last
+                    moves[(row, right)] = last
 
                     if last:
                         if step == -1:
-                            row = max(r - 3, 0)
+                            row = max(row - 3, 0)
                         else:
-                            row = min(r + 3, ROWS)
+                            row = min(row + 3, ROWS)
 
-                        moves.update(self._traverse_left(r + step, row, step, colour, right - 1, skipped=last))
-                        moves.update(self._traverse_right(r + step, row, step, colour, right + 1, skipped=last))
+                        moves.update(self._traverse_left(row + step, row, step, colour, right - 1, captured=last))
+                        moves.update(self._traverse_right(row + step, row, step, colour, right + 1, captured=last))
                     break
 
             elif current.colour == colour:
