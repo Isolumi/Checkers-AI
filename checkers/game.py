@@ -16,6 +16,7 @@ from .constants import *
 from .board import Board
 from .piece import Piece
 from python_ta.contracts import check_contracts
+import pygame
 
 
 @check_contracts

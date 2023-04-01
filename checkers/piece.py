@@ -13,6 +13,7 @@ This file is Copyright (c) 2023 Hubert Xu, Ibrahim Mohammad Malik, Ryan Zhang, V
 from __future__ import annotations
 from .constants import *
 from python_ta.contracts import check_contracts
+import pygame
 
 
 @check_contracts

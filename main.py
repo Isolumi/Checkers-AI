@@ -1,8 +1,21 @@
-import pygame
+""" Checkers Game class
+
+Module Description
+==================
+
+This module contains a collection of functions and attributes that will be used to help run the whole checkers game.
+
+Copyright and Usage Information
+===============================
+
+This file is Copyright (c) 2023 Hubert Xu, Ibrahim Mohammad Malik, Ryan Zhang, Vishnu Neelanath
+"""
+from __future__ import annotations
+from python_ta.contracts import check_contracts
 from checkers.constants import *
 from checkers.game import Game
-import sys
 from checkers.piece import Piece
+import pygame
 
 FPS = 60
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -10,14 +23,7 @@ pygame.display.set_caption('Checkers!')
 pygame.init()
 
 
-def get_row_col_from_mouse(pos: tuple[int, int]) -> tuple:
-    """ returns the square corresponding to the user's mouse position """
-    x, y = pos
-    row = y // SQUARE_SIZE
-    col = x // SQUARE_SIZE
-    return (row, col)
-
-
+@check_contracts
 def main() -> None:
     """ main function where the game is run """
     run = True
@@ -46,8 +52,37 @@ def main() -> None:
     game_over(SCREEN, winner[0], winner[1])
 
 
+def get_row_col_from_mouse(pos: tuple[int, int]) -> tuple:
+    """ returns the square that the user's mouse is positioned in.
+
+    Parameters:
+    - pos: a tuple of the x,y-coordinates of the user's mouse location.
+
+    Returns:
+    - Returns the row and column of where the user's mouse is positioned as a tuple.
+
+    Preconditions:
+    - pos is within the size of the screen.
+    """
+    x, y = pos
+    row = y // SQUARE_SIZE
+    col = x // SQUARE_SIZE
+    return (row, col)
+
+
 def game_over(screen: pygame.Surface, winner: tuple[int, int, int], board: list[list[Piece | int]]) -> None:
-    """ screen for when game ends """
+    """ screen for when game ends
+
+    Parameters:
+    - screen: the pygame screen object.
+    - winner: the colour of the winning player.
+    - board: the end result of the finished game of checkers.
+
+    Preconditions:
+    - screen is a valid pygame surface object
+    - winner in ((255, 255, 255), (0, 0, 0))
+    - board is a valid game board
+    """
     corbel_70 = pygame.font.SysFont('Corbel', 70)
     corbel_35 = pygame.font.SysFont('Corbel', 35)
     cont = True
@@ -132,6 +167,16 @@ def game_over(screen: pygame.Surface, winner: tuple[int, int, int], board: list[
 
 
 def draw_game_over(screen: pygame.Surface, board: list[list[Piece | int]]) -> None:
+    """ Draws the game over screen
+
+    Parameters:
+    - screen: a pygame surface object in which the screen is drawn on.
+    - board: the end result of the gameboard when the game ended.
+
+    Preconditions:
+    - screen is a valid pygame surface object.
+    - board is valid game board.
+    """
     screen.fill(DARK_BROWN2)
     for row in range(ROWS):
         for col in range(row % 2, ROWS, 2):
@@ -145,9 +190,7 @@ def draw_game_over(screen: pygame.Surface, board: list[list[Piece | int]]) -> No
 
 if __name__ == '__main__':
     import doctest
-
     doctest.testmod(verbose=True)
-
     main()
 
     # import python_ta
