@@ -29,12 +29,14 @@ class Game:
     - board: an instance of board used to represent the board used for the game.
     - turn: the player whose turn it is.
     - valid_moves: a dict containing the valid moves and pieces that will be captured.
+    - prev_move: the previous move made on the game board.
     """
     screen: pygame.Surface
     selected: Optional[Piece]
     board: Board
     turn: tuple[int, int, int]
     valid_moves: dict[tuple[int, int], list[Piece]]
+    prev_move: tuple[tuple[int, int], tuple[int, int]] | str
 
     def __init__(self, screen: pygame.Surface) -> None:
         """ Initializes a checkers game """
@@ -43,6 +45,11 @@ class Game:
         self.board = Board()
         self.turn = WHITE
         self.valid_moves = {}
+        self.prev_move = '*'
+
+    def get_board(self) -> Board:
+        """ Returns a copy of the game board """
+        return self.board.__copy__()
 
     def update(self) -> None:
         """ Updates the display of the game board """

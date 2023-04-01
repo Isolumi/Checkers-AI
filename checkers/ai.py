@@ -14,7 +14,7 @@ class AI:
     def __init__(self, game_tree: GameTree) -> None:
         self.game_tree = game_tree
 
-    def update_game_tree(self) -> None:
+    def update_game_tree(self, move: tuple[tuple[int, int], tuple[int, int]], board: Board) -> None:
         raise NotImplementedError
 
     def make_move(self) -> tuple[int, int]:

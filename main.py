@@ -16,6 +16,7 @@ from checkers.constants import *
 from checkers.game import Game
 from checkers.piece import Piece
 from .checkers.ai import AI
+from .checkers.gametree import GameTree
 import pygame
 
 FPS = 60
@@ -30,34 +31,40 @@ def main() -> None:
     run = True
     clock = pygame.time.Clock()
     game = Game(SCREEN)
+    board = game.get_board()
+    game_tree = GameTree(board)
+    ai = AI(game_tree)
     winner = ()
 
     while run:
         clock.tick(FPS)
 
+        if game.winner() is not None:
+            winner = game.winner()
+            run = False
+
         if game.turn == BLACK:
+            board = game.get_board()
+            ai.update_game_tree(game.prev_move, board)
+            move = ai.make_move()
             """
             TODO: give the ai the game tree to start with, and then it will return the move that it will make,
             and I will call the game methods to update the game, and then after white makes a move, I have to
             pass in the move that was made back into the AI so that it can update it's tree, and then proceed to 
             select the next move.
             """
-            game.select(row, col)
-            game.update()
+            game.select(move[0], move[1])
             raise NotImplementedError
 
-        if game.winner() is not None:
-            winner = game.winner()
-            run = False
+        else:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                pos = pygame.mouse.get_pos()
-                row, col = get_row_col_from_mouse(pos)
-                game.select(row, col)
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pos = pygame.mouse.get_pos()
+                    row, col = get_row_col_from_mouse(pos)
+                    game.select(row, col)
 
         game.update()
 
