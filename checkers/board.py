@@ -48,6 +48,20 @@ class Board:
         self.black_kings = self.white_kings = 0
         self._create_board()
 
+    def __copy__(self) -> Board:
+        """ Creates and returns a copy of the board """
+        new_board = Board()
+        new_board.white_left = self.white_left
+        new_board.black_left = self.black_left
+        new_board.white_kings = self.white_kings
+        new_board.black_kings = self.black_kings
+
+        for i in range(0, len(self.board)):
+            for j in range(0, len(self.board[0])):
+                new_board.board[i][j] = self.board[i][j]
+
+        return new_board
+
     def _create_board(self) -> None:
         """ Creates the initial state of a gameboard """
         for row in range(ROWS):

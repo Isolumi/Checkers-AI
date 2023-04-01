@@ -50,10 +50,6 @@ class Game:
         self.draw_valid_moves(self.valid_moves)
         pygame.display.update()
 
-    def winner(self) -> Optional[tuple[tuple[int, int, int], list[list[Piece | int]]]]:
-        """ Returns the winner of the game if there is one, otherwise returns None """
-        return self.board.winner()
-
     def select(self, row: int, col: int) -> bool:
         """ Selects a piece at the given row and column
 
@@ -136,6 +132,10 @@ class Game:
             self.turn = BLACK
         else:
             self.turn = WHITE
+
+    def winner(self) -> Optional[tuple[tuple[int, int, int], list[list[Piece | int]]]]:
+        """ Returns the winner of the game if there is one, otherwise returns None """
+        return self.board.winner()
 
 
 if __name__ == '__main__':
