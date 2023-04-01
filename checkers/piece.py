@@ -42,6 +42,3 @@ class Piece:
         self.row = row
         self.col = col
         self.calc_position()
-
-    def __repr__(self) -> str:
-        return str(self.colour)

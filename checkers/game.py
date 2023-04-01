@@ -13,10 +13,7 @@ class Game:
     valid_moves: dict  # TODO: fix this
 
     def __init__(self, screen: pygame.Surface) -> None:
-        self._init()
         self.screen = screen
-
-    def _init(self) -> None:
         self.selected = None
         self.board = Board()
         self.turn = WHITE
@@ -29,9 +26,6 @@ class Game:
 
     def winner(self) -> Optional[tuple[tuple[int, int, int], list[list[Piece | int]]]]:
         return self.board.winner()
-
-    def reset(self) -> None:
-        self._init()
 
     def select(self, row: int, col: int) -> bool:
         if self.selected is not None:
