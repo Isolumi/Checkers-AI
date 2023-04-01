@@ -60,7 +60,7 @@ def game_over(screen: pygame.Surface, winner: tuple[int, int, int], board: list[
     draw_game_over(screen, board)
 
     # Constructing buttons
-    play_again_txt = corbel_35.render('Player Again?', True, BLACK)
+    play_again_txt = corbel_35.render('Play Again?', True, BLACK)
     quit_txt = corbel_35.render('QUIT', True, BLACK)
 
     win_rect = win_txt.get_rect(center=(WIDTH / 2, HEIGHT / 2))

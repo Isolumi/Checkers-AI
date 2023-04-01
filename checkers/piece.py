@@ -10,9 +10,12 @@ Copyright and Usage Information
 
 This file is Copyright (c) 2023 Hubert Xu, Ibrahim Mohammad Malik, Ryan Zhang, Vishnu Neelanath
 """
+from __future__ import annotations
 from .constants import *
+from python_ta.contracts import check_contracts
 
 
+@check_contracts
 class Piece:
     """ A class representing a piece in the game.
 
@@ -107,3 +110,15 @@ class Piece:
 
         if self.is_king:
             screen.blit(CROWN, (self.x_pos - CROWN.get_width() // 2, self.y_pos - CROWN.get_height() // 2))
+
+
+if __name__ == '__main__':
+    import doctest
+
+    doctest.testmod(verbose=True)
+
+    import python_ta
+
+    python_ta.check_all(config={
+        'max-line-length': 120
+    })

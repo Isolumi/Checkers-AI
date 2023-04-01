@@ -1,11 +1,22 @@
+""" Constants
+
+Module Description
+==================
+
+This module contains a collection of constants that will be used throughout the implementation of the checkers game.
+
+Copyright and Usage Information
+===============================
+
+This file is Copyright (c) 2023 Hubert Xu, Ibrahim Mohammad Malik, Ryan Zhang, Vishnu Neelanath
+"""
 import pygame
 
 WIDTH, HEIGHT = 800, 800
 ROWS, COLS = 8, 8
 SQUARE_SIZE = WIDTH//COLS
 
-# -- RGB --
-
+# RGB values
 RED = (255, 0, 0)
 LIGHT_RED = (200, 75, 75)
 WHITE = (255, 255, 255)
