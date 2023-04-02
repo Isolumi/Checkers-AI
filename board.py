@@ -124,7 +124,7 @@ class Board:
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
         piece.move(row, col)
 
-        if row == ROWS - 1 or row == 0:
+        if (row == ROWS - 1 or row == 0) and not piece.is_king:
             piece.make_king()
             if piece.colour == WHITE:
                 self.white_kings += 1
@@ -186,10 +186,10 @@ class Board:
         """ Returns a dictionary of valid moves for a given piece.
 
         Parameters:
-        - piece: the piece for whicih valid mores are to be determines.
+        - piece: the piece for which valid mores are to be determined.
 
         Returns:
-        - A dictionary where the keys reprsents the coordinates of valid moves for the piece and
+        - A dictionary where the keys represent the coordinates of valid moves for the piece and
         the values represent the pieces that would be captured if a piece were to move to the location
         of the key.
 
