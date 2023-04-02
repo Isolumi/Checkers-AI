@@ -161,11 +161,23 @@ class Board:
                 else:
                     self.black_left -= 1
 
-    def winner(self) -> Optional[tuple[tuple[int, int, int], list[list[Piece | int]]]]:
+    def get_winner(self) -> Optional[tuple[tuple[int, int, int], list[list[Piece | int]]]]:
         """ Determines and returns the winner of the game if any """
-        if self.white_left <= 0:
+        all_black_moves = {}
+        for row in self.board:
+            for piece in row:
+                if isinstance(piece, Piece) and piece.colour == BLACK:
+                    all_black_moves.update(self.get_valid_moves(piece))
+
+        all_white_moves = {}
+        for row in self.board:
+            for piece in row:
+                if isinstance(piece, Piece) and piece.colour == WHITE:
+                    all_white_moves.update(self.get_valid_moves(piece))
+
+        if self.white_left == 0 or len(all_white_moves) == 0:
             return (BLACK, self.board)
-        elif self.black_left <= 0:
+        elif self.black_left == 0 or len(all_black_moves) == 0:
             return (WHITE, self.board)
         else:
             return None

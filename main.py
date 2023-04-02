@@ -42,8 +42,8 @@ def main() -> None:
     while run:
         clock.tick(FPS)
 
-        if game.winner() is not None:
-            winner = game.winner()
+        if game.get_winner() is not None:
+            winner = game.get_winner()
             run = False
 
         elif game.turn == BLACK:

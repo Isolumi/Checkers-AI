@@ -140,9 +140,9 @@ class Game:
         else:
             self.turn = WHITE
 
-    def winner(self) -> Optional[tuple[tuple[int, int, int], list[list[Piece | int]]]]:
+    def get_winner(self) -> Optional[tuple[tuple[int, int, int], list[list[Piece | int]]]]:
         """ Returns the winner of the game if there is one, otherwise returns None """
-        return self._board.winner()
+        return self._board.get_winner()
 
 
 if __name__ == '__main__':
