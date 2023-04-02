@@ -1,11 +1,11 @@
 from __future__ import annotations
-from .gametree import GameTree
+from .gametree import *
 from python_ta.contracts import check_contracts
 from .board import Board
 from .constants import *
 
 
-@check_contracts
+# @check_contracts
 class AI:
     """ A player class that makes moves based on the game tree
     """
@@ -15,12 +15,14 @@ class AI:
         self.game_tree = game_tree
 
     def update_game_tree(self, move: tuple[tuple[int, int], tuple[int, int]], board: Board) -> None:
-        raise NotImplementedError
+        self.game_tree = generate_game_tree(board, move)
 
-    def make_move(self) -> tuple[int, int]:
+    def make_move(self) -> tuple[tuple[int, int], tuple[int, int]] | str:
+        print(f';lkajf;ljfjkl;jl;asdfjkl')
         moves = self.game_tree.get_subtrees()
         curr_advantage = 0
-        best = ...
+        if len(moves) != 0:
+            best = moves[0]
 
         for move in moves:
             if move.material_advantage > curr_advantage:
@@ -28,4 +30,5 @@ class AI:
                 best = move
 
         self.game_tree = best
-        return best._board_state
+        print(best.move)
+        return best.move

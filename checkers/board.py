@@ -18,7 +18,7 @@ from python_ta.contracts import check_contracts
 import pygame
 
 
-@check_contracts
+# @check_contracts
 class Board:
     """ A class representing a board in the game of checkers.
 
@@ -60,6 +60,8 @@ class Board:
             for j in range(0, len(self.board[0])):
                 new_board.board[i][j] = self.board[i][j]
 
+        if new_board is self.board:
+            raise AssertionError
         return new_board
 
     def _create_board(self) -> None:

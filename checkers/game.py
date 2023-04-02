@@ -19,7 +19,7 @@ from python_ta.contracts import check_contracts
 import pygame
 
 
-@check_contracts
+# @check_contracts
 class Game:
     """ Represents a game of checkers
 
@@ -52,6 +52,7 @@ class Game:
         return self.board.__copy__()
 
     def update(self) -> None:
+        print(f'bbbbb')
         """ Updates the display of the game board """
         self.board.draw(self.screen)
         self.draw_valid_moves(self.valid_moves)

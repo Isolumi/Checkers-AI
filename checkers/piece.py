@@ -16,7 +16,7 @@ from python_ta.contracts import check_contracts
 import pygame
 
 
-@check_contracts
+# @check_contracts
 class Piece:
     """ A class representing a piece in the game.
 

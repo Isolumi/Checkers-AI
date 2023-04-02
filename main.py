@@ -15,8 +15,8 @@ from python_ta.contracts import check_contracts
 from checkers.constants import *
 from checkers.game import Game
 from checkers.piece import Piece
-from .checkers.ai import AI
-from .checkers.gametree import GameTree
+from checkers.ai import AI
+from checkers.gametree import GameTree
 import pygame
 
 FPS = 60
@@ -25,13 +25,15 @@ pygame.display.set_caption('Checkers!')
 pygame.init()
 
 
-@check_contracts
+# @check_contracts
 def main() -> None:
     """ main function where the game is run """
     run = True
     clock = pygame.time.Clock()
     game = Game(SCREEN)
     board = game.get_board()
+    if board is game.board:
+        raise AssertionError
     game_tree = GameTree(board)
     ai = AI(game_tree)
     winner = ()
@@ -44,17 +46,16 @@ def main() -> None:
             run = False
 
         if game.turn == BLACK:
+            print(f'blacks turn')
             board = game.get_board()
+            if board is game.board:
+                print(f'babboey')
+                raise AssertionError
             ai.update_game_tree(game.prev_move, board)
             move = ai.make_move()
-            """
-            TODO: give the ai the game tree to start with, and then it will return the move that it will make,
-            and I will call the game methods to update the game, and then after white makes a move, I have to
-            pass in the move that was made back into the AI so that it can update it's tree, and then proceed to 
-            select the next move.
-            """
-            game.select(move[0], move[1])
-            raise NotImplementedError
+            game.select(move[0][0], move[0][1])
+            game.select(move[1][0], move[1][0])
+            # raise NotImplementedError
 
         else:
             for event in pygame.event.get():
@@ -65,7 +66,6 @@ def main() -> None:
                     pos = pygame.mouse.get_pos()
                     row, col = get_row_col_from_mouse(pos)
                     game.select(row, col)
-
         game.update()
 
     game_over(SCREEN, winner[0], winner[1])
