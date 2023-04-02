@@ -32,11 +32,8 @@ def main() -> None:
     clock = pygame.time.Clock()
     game = Game(SCREEN)
     board = game.get_board()
-    if board is game.board:
-        raise AssertionError
     game_tree = GameTree(board)
     ai = AI(game_tree)
-    winner = ()
 
     while run:
         clock.tick(FPS)
@@ -44,18 +41,14 @@ def main() -> None:
         if game.winner() is not None:
             winner = game.winner()
             run = False
+            game_over(SCREEN, winner[0], winner[1])
 
         if game.turn == BLACK:
-            print(f'blacks turn')
             board = game.get_board()
-            if board is game.board:
-                print(f'babboey')
-                raise AssertionError
             ai.update_game_tree(game.prev_move, board)
             move = ai.make_move()
             game.select(move[0][0], move[0][1])
-            game.select(move[1][0], move[1][0])
-            # raise NotImplementedError
+            game.select(move[1][0], move[1][1])
 
         else:
             for event in pygame.event.get():
@@ -66,9 +59,8 @@ def main() -> None:
                     pos = pygame.mouse.get_pos()
                     row, col = get_row_col_from_mouse(pos)
                     game.select(row, col)
-        game.update()
 
-    game_over(SCREEN, winner[0], winner[1])
+        game.update()
 
 
 def get_row_col_from_mouse(pos: tuple[int, int]) -> tuple:

@@ -14,6 +14,7 @@ from __future__ import annotations
 from typing import Optional
 from .constants import *
 from .piece import Piece
+from copy import deepcopy
 from python_ta.contracts import check_contracts
 import pygame
 
@@ -58,10 +59,11 @@ class Board:
 
         for i in range(0, len(self.board)):
             for j in range(0, len(self.board[0])):
-                new_board.board[i][j] = self.board[i][j]
+                if isinstance(self.board[i][j], Piece):
+                    new_board.board[i][j] = self.board[i][j].__copy__()
+                else:
+                    new_board.board[i][j] = self.board[i][j]
 
-        if new_board is self.board:
-            raise AssertionError
         return new_board
 
     def _create_board(self) -> None:

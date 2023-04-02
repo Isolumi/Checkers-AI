@@ -50,24 +50,14 @@ class GameTree:
         """ Add a subtree to this game tree. """
         self._subtrees[str(subtree._board_state)] = subtree
 
-    # def insert_move_sequence(self, board_statuses: list[Board], curr_index: int = 0) -> None:
-    #     """ Insert a sequence of board statuses """
-    #     if curr_index == len(board_statuses):
-    #         return
-    #
-    #     if self.find_subtree(str(board_statuses[curr_index])) is not None:
-    #         self.find_subtree(str(board_statuses[curr_index])).insert_move_sequence(board_statuses, curr_index + 1)
-    #     else:
-    #         new_board = GameTree(str(board_statuses[curr_index]))
-    #         new_board.insert_move_sequence(board_statuses, curr_index + 1)
 
-
-def generate_game_tree(board: Board, m, d: int = 0) -> GameTree:
-    game_tree = GameTree(board=board)
+def generate_game_tree(board: Board, m: tuple[tuple[int, int], tuple[int, int]], d: int = 0) -> GameTree:
+    game_tree = GameTree(board)
     game_tree.move = m
 
-    if d == 10:
-        game_tree.material_advantage = board.black_left - board.white_left
+    if d == 4:
+        game_tree.material_advantage = (board.black_left + 2 * board.black_kings) - (board.white_left + 2 * board.white_kings)
+        print(f'd1: {game_tree.material_advantage}')
         return game_tree
     else:
         for row in board.board:
@@ -75,32 +65,37 @@ def generate_game_tree(board: Board, m, d: int = 0) -> GameTree:
                 if piece == 0:
                     pass
                 elif piece.colour == BLACK and d % 2 == 0:
-                    for cord in board.get_valid_moves(piece).keys():
+                    for cord in list(board.get_valid_moves(piece).keys()):
                         board_copy = board.__copy__()
                         move = ((piece.row, piece.col), cord)
-                        board_copy.move(piece, cord[0], cord[1])
+                        board_copy.move(board_copy.board[piece.row][piece.col], cord[0], cord[1])
+                        remove_pieces = board.get_valid_moves(piece)[cord]
+                        board_copy.remove(remove_pieces)
                         new_game_tree = generate_game_tree(board_copy, move, d + 1)
                         if len(new_game_tree.get_subtrees()) == 0:
-                            new_game_tree.material_advantage = new_game_tree._board_state.black_left - new_game_tree._board_state.white_left
+                            new_game_tree.material_advantage = (new_game_tree._board_state.black_left + 2 * board.black_kings) - (new_game_tree._board_state.white_left + 2 * board.white_kings)
                         else:
                             new_game_tree.material_advantage = sum([tree.material_advantage for tree in new_game_tree.get_subtrees()]) / len(new_game_tree.get_subtrees())
-                            # new_game_tree.move = move
                         game_tree.add_subtree(new_game_tree)
                 elif piece.colour == WHITE and d % 2 != 0:
-                    for cord in board.get_valid_moves(piece).keys():
+                    for cord in list(board.get_valid_moves(piece).keys()):
                         board_copy = board.__copy__()
                         move = ((piece.row, piece.col), cord)
-                        board_copy.move(piece, cord[0], cord[1])
+                        board_copy.move(board_copy.board[piece.row][piece.col], cord[0], cord[1])
+                        remove_pieces = board.get_valid_moves(piece)[cord]
+                        board_copy.remove(remove_pieces)
                         new_game_tree = generate_game_tree(board_copy, move, d + 1)
                         if len(new_game_tree.get_subtrees()) == 0:
-                            new_game_tree.material_advantage = new_game_tree._board_state.black_left - new_game_tree._board_state.white_left
+                            new_game_tree.material_advantage = (new_game_tree._board_state.black_left + 2 * board.black_kings) - (new_game_tree._board_state.white_left + 2 * board.white_kings)
                         else:
                             new_game_tree.material_advantage = sum(
                                 [tree.material_advantage for tree in new_game_tree.get_subtrees()]) / len(
                                 new_game_tree.get_subtrees())
-                            # new_game_tree.move = move
                         game_tree.add_subtree(new_game_tree)
 
+        if len(game_tree.get_subtrees()) != 0:
+            game_tree.material_advantage = sum([tree.material_advantage for tree in game_tree.get_subtrees()]) / len(game_tree.get_subtrees())
+        print(f'gametreeadv: {game_tree.material_advantage}')
         return game_tree
 
 

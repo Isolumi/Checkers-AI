@@ -33,7 +33,7 @@ class Game:
     """
     screen: pygame.Surface
     selected: Optional[Piece]
-    board: Board
+    _board: Board
     turn: tuple[int, int, int]
     valid_moves: dict[tuple[int, int], list[Piece]]
     prev_move: tuple[tuple[int, int], tuple[int, int]] | str
@@ -42,19 +42,18 @@ class Game:
         """ Initializes a checkers game """
         self.screen = screen
         self.selected = None
-        self.board = Board()
+        self._board = Board()
         self.turn = WHITE
         self.valid_moves = {}
         self.prev_move = '*'
 
     def get_board(self) -> Board:
         """ Returns a copy of the game board """
-        return self.board.__copy__()
+        return self._board.__copy__()
 
     def update(self) -> None:
-        print(f'bbbbb')
         """ Updates the display of the game board """
-        self.board.draw(self.screen)
+        self._board.draw(self.screen)
         self.draw_valid_moves(self.valid_moves)
         pygame.display.update()
 
@@ -78,10 +77,10 @@ class Game:
                 self.selected = None
                 self.select(row, col)
 
-        piece = self.board.get_piece(row, col)
+        piece = self._board.get_piece(row, col)
         if piece != 0 and piece.colour == self.turn:
             self.selected = piece
-            self.valid_moves = self.board.get_valid_moves(piece)
+            self.valid_moves = self._board.get_valid_moves(piece)
             return True
         elif piece == 0 or piece.colour != self.turn:
             self.selected = None
@@ -105,19 +104,19 @@ class Game:
         - row < ROWS and row >= 0
         - col < COLS and col >= 0
         """
-        piece = self.board.get_piece(row, col)
+        piece = self._board.get_piece(row, col)
 
         if self.selected and piece == 0 and (row, col) in self.valid_moves:
-            self.board.move(self.selected, row, col)
+            self.prev_move = ((self.selected.row, self.selected.col), (row, col))
+            self._board.move(self.selected, row, col)
             captured = self.valid_moves[(row, col)]
             if captured:
-                self.board.remove(captured)
+                self._board.remove(captured)
 
             self.change_turn()
+            return True
         else:
             return False
-
-        return True
 
     def draw_valid_moves(self, moves: dict[tuple[int, int], list[Piece]]) -> None:
         """ Highlights the valid moves on the game board.
@@ -143,7 +142,7 @@ class Game:
 
     def winner(self) -> Optional[tuple[tuple[int, int, int], list[list[Piece | int]]]]:
         """ Returns the winner of the game if there is one, otherwise returns None """
-        return self.board.winner()
+        return self._board.winner()
 
 
 if __name__ == '__main__':

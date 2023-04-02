@@ -18,17 +18,15 @@ class AI:
         self.game_tree = generate_game_tree(board, move)
 
     def make_move(self) -> tuple[tuple[int, int], tuple[int, int]] | str:
-        print(f';lkajf;ljfjkl;jl;asdfjkl')
         moves = self.game_tree.get_subtrees()
-        curr_advantage = 0
-        if len(moves) != 0:
-            best = moves[0]
+        curr_advantage = -100
+        best = moves[0]
 
+        print([move.material_advantage for move in moves])
         for move in moves:
             if move.material_advantage > curr_advantage:
                 curr_advantage = move.material_advantage
                 best = move
 
         self.game_tree = best
-        print(best.move)
         return best.move

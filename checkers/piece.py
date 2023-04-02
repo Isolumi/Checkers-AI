@@ -72,6 +72,14 @@ class Piece:
         self.OUTLINE = 45
         self.calc_position()
 
+    def __repr__(self) -> str:
+        return str(self.colour)
+
+    def __copy__(self) -> Piece:
+        new_piece = Piece(self.row, self.col, self.colour)
+        new_piece.is_king = self.is_king
+        return new_piece
+
     def calc_position(self) -> None:
         """ Calculates the x,y-coordinates of the center of the piece on the screen """
         self.x_pos = (SQUARE_SIZE * self.col) + (SQUARE_SIZE // 2)
