@@ -5,6 +5,10 @@ Module Description
 
 This module contains a collection of functions and attributes that will be used to help run the whole checkers game.
 
+**NOTE**
+The performance of this program may be affected by the computational power of your computer. If you are experiencing
+slow run times, please head to gametree.py line-80 and lower the value d. (The higher the value of d, the better the AI)
+
 Copyright and Usage Information
 ===============================
 
