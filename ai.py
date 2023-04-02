@@ -12,8 +12,8 @@ Copyright and Usage Information
 This file is Copyright (c) 2023 Hubert Xu, Ibrahim Mohammad Malik, Ryan Zhang, Vishnu Neelanath
 """
 from __future__ import annotations
+# from python_ta.contracts import check_contracts
 from gametree import *
-from python_ta.contracts import check_contracts
 from board import Board
 
 
@@ -64,9 +64,13 @@ class AI:
 
 if __name__ == '__main__':
     import doctest
+
     doctest.testmod(verbose=True)
 
     import python_ta
+
     python_ta.check_all(config={
-        'max-line-length': 120
+        'extra-imports': ['board', 'gametree'],
+        'max-line-length': 120,
+        'disable': ['wildcard-import']
     })
