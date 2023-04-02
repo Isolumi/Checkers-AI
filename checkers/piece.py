@@ -123,11 +123,9 @@ class Piece:
 
 if __name__ == '__main__':
     import doctest
-
     doctest.testmod(verbose=True)
 
     import python_ta
-
     python_ta.check_all(config={
         'max-line-length': 120
     })
