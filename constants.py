@@ -30,4 +30,4 @@ LIGHT_BROWN = (236, 205, 165)
 LIGHT_BROWN2 = (213, 202, 191)
 
 
-CROWN = pygame.transform.scale(pygame.image.load('assets/crown.png'), (50, 45))
+CROWN = pygame.transform.scale(pygame.image.load('crown.png'), (50, 45))
