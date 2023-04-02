@@ -26,10 +26,12 @@ class Game:
     Instance Attribute:
     - screen: the pygame screen object on which the game is displayed.
     - selected: the piece that the player has selected with their mouse.
-    - board: an instance of board used to represent the board used for the game.
     - turn: the player whose turn it is.
     - valid_moves: a dict containing the valid moves and pieces that will be captured.
     - prev_move: the previous move made on the game board.
+
+    Private Instance Attributes:
+    - board: an instance of board used to represent the board used for the game.
     """
     screen: pygame.Surface
     selected: Optional[Piece]
