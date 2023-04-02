@@ -12,11 +12,13 @@ This file is Copyright (c) 2023 Hubert Xu, Ibrahim Mohammad Malik, Ryan Zhang, V
 """
 from __future__ import annotations
 from typing import Optional
+import pygame
 from constants import *
 from board import Board
 from piece import Piece
-from python_ta.contracts import check_contracts
-import pygame
+
+
+# from python_ta.contracts import check_contracts
 
 
 # @check_contracts
@@ -149,9 +151,13 @@ class Game:
 
 if __name__ == '__main__':
     import doctest
+
     doctest.testmod(verbose=True)
 
     import python_ta
+
     python_ta.check_all(config={
-        'max-line-length': 120
+        'extra-imports': ['board', 'piece', 'pygame', 'constants'],
+        'max-line-length': 120,
+        'disable': ['wildcard-import']
     })
