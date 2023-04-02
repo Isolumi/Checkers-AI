@@ -14,23 +14,24 @@ Copyright and Usage Information
 
 This file is Copyright (c) 2023 Hubert Xu, Ibrahim Mohammad Malik, Ryan Zhang, Vishnu Neelanath
 """
+
 from __future__ import annotations
-from constants import *
+import pygame
+import constants
 from game import Game
 from piece import Piece
 from ai import AI
 from gametree import GameTree
-import pygame
-
-FPS = 24
-SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('Checkers!')
-pygame.init()
 
 
 # @check_contracts
 def main() -> None:
     """ main function where the game is run """
+    FPS = 24
+    SCREEN = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
+    pygame.display.set_caption('Checkers!')
+    pygame.init()
+
     run = True
     clock = pygame.time.Clock()
     game = Game(SCREEN)
@@ -39,6 +40,27 @@ def main() -> None:
     ai = AI(game_tree)
     winner = ()
 
+    def player_turn(events: any) -> bool:
+        """
+        Helper function - to be run when it is the player's turn
+
+        Parameters:
+        - events : the pygame event queue
+        Returns:
+        - should_run : whether the game should keep running
+        """
+        should_run = True
+        for ev in events:
+            if ev.type == pygame.QUIT:
+                should_run = False
+
+            if ev.type == pygame.MOUSEBUTTONDOWN:
+                position = pygame.mouse.get_pos()
+                row_num, col_num = get_row_col_from_mouse(position)
+                game.select(row_num, col_num)
+
+        return should_run
+
     while run:
         clock.tick(FPS)
 
@@ -46,7 +68,7 @@ def main() -> None:
             winner = game.get_winner()
             run = False
 
-        elif game.turn == BLACK:
+        elif game.turn == constants.BLACK:
             board = game.get_board()
             ai.update_game_tree(game.prev_move, board)
             move = ai.make_move()
@@ -55,14 +77,7 @@ def main() -> None:
             game.select(move[1][0], move[1][1])
 
         else:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    run = False
-
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    pos = pygame.mouse.get_pos()
-                    row, col = get_row_col_from_mouse(pos)
-                    game.select(row, col)
+            run = player_turn(pygame.event.get())
 
         game.update()
 
@@ -82,8 +97,8 @@ def get_row_col_from_mouse(pos: tuple[int, int]) -> tuple:
     - pos is within the size of the screen.
     """
     x, y = pos
-    row = y // SQUARE_SIZE
-    col = x // SQUARE_SIZE
+    row = y // constants.SQUARE_SIZE
+    col = x // constants.SQUARE_SIZE
     return (row, col)
 
 
@@ -106,18 +121,18 @@ def game_over(screen: pygame.Surface, winner: tuple[int, int, int], board: list[
 
     # Writing winner text
     if winner == (0, 0, 0):
-        win_txt = corbel_70.render('BLACK WINS!', True, BLACK)
+        win_txt = corbel_70.render('BLACK WINS!', True, constants.BLACK)
     else:
-        win_txt = corbel_70.render('WHITE WINS!', True, WHITE)
+        win_txt = corbel_70.render('WHITE WINS!', True, constants.WHITE)
     draw_game_over(screen, board)
 
     # Constructing buttons
-    play_again_txt = corbel_35.render('Play Again?', True, BLACK)
-    quit_txt = corbel_35.render('QUIT', True, BLACK)
+    play_again_txt = corbel_35.render('Play Again?', True, constants.BLACK)
+    quit_txt = corbel_35.render('QUIT', True, constants.BLACK)
 
-    win_rect = win_txt.get_rect(center=(WIDTH / 2, HEIGHT / 2))
-    play_again_rect = play_again_txt.get_rect(center=(WIDTH / 2, HEIGHT / 1.6))
-    quit_rect = quit_txt.get_rect(center=(WIDTH / 2, HEIGHT / 1.5))
+    win_rect = win_txt.get_rect(center=(constants.WIDTH / 2, constants.HEIGHT / 2))
+    play_again_rect = play_again_txt.get_rect(center=(constants.WIDTH / 2, constants.HEIGHT / 1.6))
+    quit_rect = quit_txt.get_rect(center=(constants.WIDTH / 2, constants.HEIGHT / 1.5))
 
     screen.blit(win_txt, win_rect)
 
@@ -126,17 +141,18 @@ def game_over(screen: pygame.Surface, winner: tuple[int, int, int], board: list[
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if play_again_rect.left <= x <= play_again_rect.right and \
-                        play_again_rect.top <= y <= play_again_rect.bottom:
-                    main()
-                elif quit_rect.left <= x <= quit_rect.right and quit_rect.top <= y <= quit_rect.bottom:
-                    cont = False
+            elif event.type == pygame.MOUSEBUTTONDOWN and play_again_rect.left <= x <= play_again_rect.right and \
+                    play_again_rect.top <= y <= play_again_rect.bottom:
+                main()
+
+            elif event.type == pygame.MOUSEBUTTONDOWN and quit_rect.left <= x <= quit_rect.right and \
+                    quit_rect.top <= y <= quit_rect.bottom:
+                cont = False
 
         if play_again_rect.left <= x <= play_again_rect.right and play_again_rect.top <= y <= play_again_rect.bottom:
             pygame.draw.rect(
                 surface=screen,
-                color=DARK_GREY,
+                color=constants.DARK_GREY,
                 rect=[
                     play_again_rect.left,
                     play_again_rect.top,
@@ -147,7 +163,7 @@ def game_over(screen: pygame.Surface, winner: tuple[int, int, int], board: list[
         elif quit_rect.left <= x <= quit_rect.right and quit_rect.top <= y <= quit_rect.bottom:
             pygame.draw.rect(
                 surface=screen,
-                color=DARK_GREY,
+                color=constants.DARK_GREY,
                 rect=[
                     quit_rect.left,
                     quit_rect.top,
@@ -158,7 +174,7 @@ def game_over(screen: pygame.Surface, winner: tuple[int, int, int], board: list[
         else:
             pygame.draw.rect(
                 surface=screen,
-                color=GREY,
+                color=constants.GREY,
                 rect=[
                     play_again_rect.left,
                     play_again_rect.top,
@@ -168,7 +184,7 @@ def game_over(screen: pygame.Surface, winner: tuple[int, int, int], board: list[
             )
             pygame.draw.rect(
                 surface=screen,
-                color=GREY,
+                color=constants.GREY,
                 rect=[
                     quit_rect.left,
                     quit_rect.top,
@@ -194,12 +210,13 @@ def draw_game_over(screen: pygame.Surface, board: list[list[Piece | int]]) -> No
     - screen is a valid pygame surface object.
     - board is valid game board.
     """
-    screen.fill(DARK_BROWN2)
-    for row in range(ROWS):
-        for col in range(row % 2, ROWS, 2):
-            pygame.draw.rect(screen, LIGHT_BROWN2, (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
-    for row in range(ROWS):
-        for col in range(COLS):
+    screen.fill(constants.DARK_BROWN2)
+    for row in range(constants.ROWS):
+        for col in range(row % 2, constants.ROWS, 2):
+            pygame.draw.rect(screen, constants.LIGHT_BROWN2, (
+                col * constants.SQUARE_SIZE, row * constants.SQUARE_SIZE, constants.SQUARE_SIZE, constants.SQUARE_SIZE))
+    for row in range(constants.ROWS):
+        for col in range(constants.COLS):
             piece = board[row][col]
             if piece != 0:
                 piece.draw(screen)
@@ -207,10 +224,14 @@ def draw_game_over(screen: pygame.Surface, board: list[list[Piece | int]]) -> No
 
 if __name__ == '__main__':
     import doctest
+
     doctest.testmod(verbose=True)
     main()
 
     import python_ta
+
     python_ta.check_all(config={
-        'max-line-length': 120
+        'extra-imports': ['pygame', 'constants', 'game', 'piece', 'ai', 'gametree'],
+        'max-line-length': 120,
+        'disable': ['no-member']  # python-ta did not recognise members of pygame
     })
