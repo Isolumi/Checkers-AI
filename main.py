@@ -15,11 +15,11 @@ Copyright and Usage Information
 This file is Copyright (c) 2023 Hubert Xu, Ibrahim Mohammad Malik, Ryan Zhang, Vishnu Neelanath
 """
 from __future__ import annotations
-from project.CheckersAI.constants import *
-from project.CheckersAI.game import Game
-from project.CheckersAI.piece import Piece
-from project.CheckersAI.ai import AI
-from project.CheckersAI.gametree import GameTree
+from constants import *
+from game import Game
+from piece import Piece
+from ai import AI
+from gametree import GameTree
 import pygame
 
 FPS = 24

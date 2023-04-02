@@ -12,9 +12,9 @@ This file is Copyright (c) 2023 Hubert Xu, Ibrahim Mohammad Malik, Ryan Zhang, V
 """
 from __future__ import annotations
 from typing import Optional
-from .constants import *
-from .board import Board
-from .piece import Piece
+from constants import *
+from board import Board
+from piece import Piece
 from python_ta.contracts import check_contracts
 import pygame
 

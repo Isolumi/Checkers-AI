@@ -14,8 +14,8 @@ This file is Copyright (c) 2023 Hubert Xu, Ibrahim Mohammad Malik, Ryan Zhang, V
 
 from __future__ import annotations
 from python_ta.contracts import check_contracts
-from .board import Board
-from .constants import *
+from board import Board
+from constants import *
 
 
 # @check_contracts

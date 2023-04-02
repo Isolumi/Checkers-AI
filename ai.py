@@ -12,9 +12,9 @@ Copyright and Usage Information
 This file is Copyright (c) 2023 Hubert Xu, Ibrahim Mohammad Malik, Ryan Zhang, Vishnu Neelanath
 """
 from __future__ import annotations
-from .gametree import *
+from gametree import *
 from python_ta.contracts import check_contracts
-from .board import Board
+from board import Board
 
 
 # @check_contracts
