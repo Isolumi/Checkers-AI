@@ -22,7 +22,6 @@ class AI:
         curr_advantage = -100
         best = moves[0]
 
-        print([move.material_advantage for move in moves])
         for move in moves:
             if move.material_advantage > curr_advantage:
                 curr_advantage = move.material_advantage

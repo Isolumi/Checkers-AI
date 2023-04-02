@@ -19,7 +19,7 @@ from checkers.ai import AI
 from checkers.gametree import GameTree
 import pygame
 
-FPS = 60
+FPS = 24
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Checkers!')
 pygame.init()
@@ -34,6 +34,7 @@ def main() -> None:
     board = game.get_board()
     game_tree = GameTree(board)
     ai = AI(game_tree)
+    winner = ()
 
     while run:
         clock.tick(FPS)
@@ -41,12 +42,12 @@ def main() -> None:
         if game.winner() is not None:
             winner = game.winner()
             run = False
-            game_over(SCREEN, winner[0], winner[1])
 
-        if game.turn == BLACK:
+        elif game.turn == BLACK:
             board = game.get_board()
             ai.update_game_tree(game.prev_move, board)
             move = ai.make_move()
+            pygame.time.delay(100)
             game.select(move[0][0], move[0][1])
             game.select(move[1][0], move[1][1])
 
@@ -61,6 +62,8 @@ def main() -> None:
                     game.select(row, col)
 
         game.update()
+
+    game_over(SCREEN, winner[0], winner[1])
 
 
 def get_row_col_from_mouse(pos: tuple[int, int]) -> tuple:
@@ -125,7 +128,7 @@ def game_over(screen: pygame.Surface, winner: tuple[int, int, int], board: list[
                         play_again_rect.top <= y <= play_again_rect.bottom:
                     main()
                 elif quit_rect.left <= x <= quit_rect.right and quit_rect.top <= y <= quit_rect.bottom:
-                    pygame.quit()
+                    cont = False
 
         if play_again_rect.left <= x <= play_again_rect.right and play_again_rect.top <= y <= play_again_rect.bottom:
             pygame.draw.rect(
